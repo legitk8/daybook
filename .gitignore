@@ -1,0 +1,41 @@
+# Frontend (React / Vite)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Compiled binaries
+backend/bin/
+backend/*.exe
+backend/*.out
+backend/*.test
+
+# Go workspace
+go.work
+
+# Environment / Secrets
+.env
+*.env
+.env.local
+.env.*.local
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Coverage / reports
+coverage/
+*.coverage
+
+# Misc
+*.log
+*~
