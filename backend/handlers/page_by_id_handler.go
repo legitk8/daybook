@@ -11,6 +11,8 @@ func PageByIDHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		GetPageHandler(w, r, id)
+	case http.MethodPut:
+		UpdatePageHandler(w, r, id)
 	case http.MethodDelete:
 		DeletePageHandler(w, r, id)
 

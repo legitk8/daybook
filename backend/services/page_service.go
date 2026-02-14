@@ -2,7 +2,7 @@ package services
 
 import "daybook/backend/models"
 
-var pages []models.Page
+var pages []models.Page = []models.Page{}
 
 var nextID int = 1
 
@@ -17,6 +17,18 @@ func CreatePage(title string, content string) models.Page {
 	pages = append(pages, page)
 
 	return page
+}
+
+func UpdatePage(id int, title string, content string) (models.Page, bool) {
+	for i, page := range pages {
+		if page.ID == id {
+			pages[i].Title = title
+			pages[i].Content = content
+
+			return pages[i], true
+		}
+	}
+	return models.Page{}, false
 }
 
 func GetPageByID(id int) (models.Page, bool) {
