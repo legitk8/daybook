@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+
+	"daybook/backend/handlers"
 )
 
 func main() {
@@ -11,6 +13,13 @@ func main() {
 		fmt.Fprintln(w, "OK")
 	})
 
+	http.HandleFunc("/pages", handlers.PagesHandler)
+	http.HandleFunc("/pages/", handlers.PageByIDHandler)
+
 	fmt.Println("Server running on :8080")
-	http.ListenAndServe(":8080", nil)
+
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Println("Server Failure: ", err)
+	}
 }
