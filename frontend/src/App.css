@@ -1,42 +1,113 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.app {
+  display: flex;
+  height: 100vh;
+  font-family: sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.sidebar {
+  width: 30%;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #f9f9f9;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.content {
+  width: 70%;
+  padding: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Sidebar header */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.card {
-  padding: 2em;
+/* Add button */
+.add-btn {
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  cursor: pointer;
 }
 
-.read-the-docs {
-  color: #888;
+/* Notes list */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+li:hover {
+  background: #eee;
+}
+
+li.active {
+  background: #ddd;
+  font-weight: bold;
+}
+
+li span {
+  flex: 1;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+  color: red;
+}
+
+/* Editor */
+.title-input {
+  font-size: 22px;
+  padding: 8px;
+}
+
+.content-input {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.save-btn {
+  width: 110px;
+  padding: 10px;
+
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  background: white;
+  cursor: pointer;
+
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.save-btn:hover {
+  background: #f3f3f3;
+  border-color: #999;
+}
+
+.save-btn:active {
+  transform: scale(0.98);
 }
