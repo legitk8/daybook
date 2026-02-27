@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"daybook/backend/db"
 	"daybook/backend/handlers"
+	"daybook/backend/repo"
+	"daybook/backend/services"
 )
 
 func enableCORS(next http.Handler) http.Handler {
@@ -24,6 +27,13 @@ func enableCORS(next http.Handler) http.Handler {
 }
 
 func main() {
+	db.InitDB()
+	defer db.Pool.Close()
+
+	pageRepo := repo.NewPostgresPageRepository()
+	pageService := services.NewPageService(pageRepo)
+	pageHandler := handlers.NewPageHandler(pageService)
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
@@ -31,8 +41,8 @@ func main() {
 		fmt.Fprintln(w, "OK")
 	})
 
-	mux.HandleFunc("/pages", handlers.PagesHandler)
-	mux.HandleFunc("/pages/", handlers.PageByIDHandler)
+	mux.HandleFunc("/pages", pageHandler.PagesHandler)
+	mux.HandleFunc("/pages/", pageHandler.PageByIDHandler)
 
 	fmt.Println("Server running on :8080")
 

@@ -5,17 +5,16 @@ import (
 	"strings"
 )
 
-func PageByIDHandler(w http.ResponseWriter, r *http.Request) {
+func (h *PageHandler) PageByIDHandler(w http.ResponseWriter, r *http.Request) {
 	id := strings.TrimPrefix(r.URL.Path, "/pages/")
 
 	switch r.Method {
 	case http.MethodGet:
-		GetPageHandler(w, r, id)
+		h.GetPageHandler(w, r, id)
 	case http.MethodPut:
-		UpdatePageHandler(w, r, id)
+		h.UpdatePageHandler(w, r, id)
 	case http.MethodDelete:
-		DeletePageHandler(w, r, id)
-
+		h.DeletePageHandler(w, r, id)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}

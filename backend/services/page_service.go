@@ -1,55 +1,85 @@
 package services
 
-import "daybook/backend/models"
+import (
+	"context"
+	"daybook/backend/models"
+	"daybook/backend/repo"
 
-var pages []models.Page = []models.Page{}
+	"github.com/google/uuid"
+)
 
-var nextID int = 1
+type PageService struct {
+	repo repo.PageRepository
+}
 
-func CreatePage(title string, content string) models.Page {
-	page := models.Page{
-		ID:      nextID,
+func NewPageService(r repo.PageRepository) *PageService {
+	return &PageService{
+		repo: r,
+	}
+}
+
+func (s *PageService) CreatePage(
+	ctx context.Context,
+	userID uuid.UUID,
+	title string,
+	content string,
+) (*models.Page, error) {
+
+	page := &models.Page{
+		ID:      uuid.New(),
+		UserID:  userID,
 		Title:   title,
 		Content: content,
 	}
 
-	nextID++
-	pages = append(pages, page)
-
-	return page
-}
-
-func UpdatePage(id int, title string, content string) (models.Page, bool) {
-	for i, page := range pages {
-		if page.ID == id {
-			pages[i].Title = title
-			pages[i].Content = content
-
-			return pages[i], true
-		}
+	err := s.repo.Create(ctx, page)
+	if err != nil {
+		return nil, err
 	}
-	return models.Page{}, false
+
+	return page, nil
 }
 
-func GetPageByID(id int) (models.Page, bool) {
-	for _, page := range pages {
-		if page.ID == id {
-			return page, true
-		}
+func (s *PageService) UpdatePage(
+	ctx context.Context,
+	id uuid.UUID,
+	title string,
+	content string,
+) (*models.Page, error) {
+
+	page, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		return nil, err
 	}
-	return models.Page{}, false
-}
 
-func ListPages() []models.Page {
-	return pages
-}
+	page.Title = title
+	page.Content = content
 
-func DeletePage(id int) bool {
-	for i, page := range pages {
-		if page.ID == id {
-			pages = append(pages[:i], pages[i+1:]...)
-			return true
-		}
+	err = s.repo.Update(ctx, page)
+	if err != nil {
+		return nil, err
 	}
-	return false
+
+	return page, nil
+}
+
+func (s *PageService) GetPageByID(
+	ctx context.Context,
+	id uuid.UUID,
+) (*models.Page, error) {
+	return s.repo.GetByID(ctx, id)
+}
+
+func (s *PageService) ListPages(
+	ctx context.Context,
+	userID uuid.UUID,
+) ([]models.Page, error) {
+	return s.repo.GetAllByUser(ctx, userID)
+}
+
+func (s *PageService) DeletePage(
+	ctx context.Context,
+	id uuid.UUID,
+) error {
+	return s.repo.SoftDelete(ctx, id)
 }
